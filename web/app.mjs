@@ -1,37 +1,66 @@
-import { cleanLines } from './model.mjs';
-const input = document.querySelector('#input');
-const output = document.querySelector('#output');
-const status = document.querySelector('#status');
-const copy = document.querySelector('#copy');
-function update() {
-  const result = cleanLines(input.value);
-  output.value = result.text;
-  status.textContent = `${result.count} unique ${result.count === 1 ? 'line' : 'lines'}; ${result.removed} ${result.removed === 1 ? 'duplicate' : 'duplicates'} removed.`;
-  copy.disabled = result.count === 0;
-}
-input.addEventListener('input', update);
-document.querySelector('#sample').addEventListener('click', () => {
-  input.value = '  Halifax\nLangley\nHalifax\n\nVancouver  ';
-  update();
-});
-document.querySelector('#clear').addEventListener('click', () => {
-  input.value = '';
-  update();
-  input.focus();
-});
-if (navigator.clipboard && window.isSecureContext) {
-  copy.hidden = false;
-  copy.disabled = true;
-  copy.addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(output.value);
-      status.textContent = 'Result copied.';
-    } catch {
-      output.focus();
-      output.select();
-      status.textContent = 'Copy was unavailable. The result is selected so you can copy it manually.';
+import "./harbour.mjs";
+import { chooseDate, clock, mins } from "./schedule.mjs";
+import { by, row, read } from "./ui.mjs";
+import { sailings } from "./model.mjs";
+try {
+  const data = await read("schedule"),
+    date = by("date");
+  date.min = data.start;
+  date.max = data.end;
+  date.value = chooseDate(data);
+  by("edition").textContent =
+    "Schedule " +
+    data.start +
+    " – " +
+    data.end +
+    " · retrieved " +
+    data.retrieved;
+  function draw() {
+    by("sailrows").replaceChildren();
+    if (
+      !date.value ||
+      date.value < data.start ||
+      date.value > data.end ||
+      !by("time").value
+    ) {
+      by("finding").textContent =
+        "Choose a date within the published timetable and a departure time.";
+      return;
     }
-  });
+    const list = sailings(
+      data,
+      date.value,
+      by("terminal").value,
+      mins(by("time").value),
+    );
+    by("finding").textContent = list.length
+      ? "Next scheduled departure " +
+        clock(list[0][0]) +
+        ". " +
+        (list[1]
+          ? "The following sailing is " +
+            (list[1][0] - list[0][0]) +
+            " minutes later."
+          : "No following sailing in the available timetable.")
+      : "No remaining departures in this date and next-day timetable.";
+    by("sailrows").replaceChildren(
+      ...list
+        .filter(
+          ([departure], index) =>
+            departure < 1440 || index === 0 || index < list.length - 1,
+        )
+        .map(([dep, arr], i) =>
+          row([
+            clock(dep),
+            clock(arr),
+            list[i + 1] ? list[i + 1][0] - dep + " min" : "—",
+          ]),
+        ),
+    );
+  }
+  for (const id of ["terminal", "date", "time"])
+    by(id).addEventListener("change", draw);
+  draw();
+} catch {
+  by("finding").textContent = "The timetable could not load.";
 }
-// Namespace future preference storage as coolcode:<tool-id>:<key>.
-// Do not persist pasted text or uploads by default.

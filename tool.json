@@ -1,16 +1,56 @@
 {
-  "id": "coolcode-tool-template",
-  "title": "CoolCode Tool Starter",
-  "description": "A browser-only example that trims lines and removes exact duplicates.",
-  "category": "security",
-  "tags": ["text", "lines", "duplicates"],
-  "icon": "scan-search",
-  "url": "/coolcode-tool-template/",
-  "source": "https://github.com/jsdyer/coolcode-tool-template",
+  "id": "seabusclock",
+  "title": "SeaBus Clock",
+  "description": "Find the busiest SeaBus hours by direction and see the scheduled gap between sailings.",
+  "category": "places",
+  "tags": [
+    "TransLink",
+    "SeaBus",
+    "Vancouver",
+    "North Vancouver",
+    "ferry",
+    "ridership"
+  ],
+  "icon": "route",
+  "url": "/seabusclock/",
+  "source": "https://github.com/jsdyer/seabusclock",
   "hosting": "project",
   "access": "browser",
   "data_info": {
-    "mode": "local",
-    "detail": "The browser reads the text you paste and compares its lines."
+    "mode": "snapshot",
+    "detail": "TransLink publishes seasonal hourly SeaBus volumes and a separate timetable for Waterfront and Lonsdale Quay.",
+    "cadence": "Daily timetable · Monthly performance check",
+    "probes": [
+      {
+        "label": "Data retrieved",
+        "url": "https://coolcode.ca/seabusclock/data/seabus-status.json",
+        "path": [
+          "retrieved"
+        ],
+        "count_at": {
+          "path": [
+            "records"
+          ],
+          "unit": "hourly volume records"
+        }
+      },
+      {
+        "label": "Coverage",
+        "url": "https://coolcode.ca/seabusclock/data/seabus-status.json",
+        "path": [
+          "start"
+        ],
+        "end_path": [
+          "end"
+        ]
+      },
+      {
+        "label": "Timetable retrieved",
+        "url": "https://coolcode.ca/seabusclock/data/status.json",
+        "path": [
+          "retrieved"
+        ]
+      }
+    ]
   }
 }
