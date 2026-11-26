@@ -6,6 +6,11 @@
 Compare fall weekday volumes in each direction, then select a terminal and service date to see the scheduled wait after a missed sailing.
 <!-- /coolcode:guide -->
 
+Direct examples
+
+- [Waterfront to Lonsdale Quay SeaBus Schedule](https://coolcode.ca/seabusclock/waterfront-to-lonsdale-quay.html)
+- [Lonsdale Quay to Waterfront SeaBus Schedule](https://coolcode.ca/seabusclock/lonsdale-quay-to-waterfront.html)
+
 ## Reading the records
 
 The hourly profile uses AvgDailyVolume from the newest TSPR seasonal SeaBus hourly CSV. A missing hour remains missing. The schedule uses GTFS route type 4 and the SeaBus route name, both terminal stop times, weekly calendars and holiday exceptions. After-midnight times use the original service date and appear on the corresponding civil date. The first next-day sailing and its following gap are included in late-night searches. Date selection is bounded by the retrieved feed. Service disruptions and vehicle positions are outside this schedule. The seasonal averages are historical and independent of the sailing date selected.

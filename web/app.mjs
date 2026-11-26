@@ -7,7 +7,10 @@ try {
     date = by("date");
   date.min = data.start;
   date.max = data.end;
-  date.value = chooseDate(data);
+  const preset = document.body.dataset;
+  if (preset.terminal) by("terminal").value = preset.terminal;
+  date.value = preset.scheduleDate >= data.start && preset.scheduleDate <= data.end
+    ? preset.scheduleDate : chooseDate(data);
   by("edition").textContent =
     "Schedule " +
     data.start +

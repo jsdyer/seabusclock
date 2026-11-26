@@ -41,6 +41,14 @@ def main():
                 assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
                 page.screenshot(path=str(screenshots / "mobile.png"), full_page=True)
                 assert not errors, errors
+                for slug,terminal in [('waterfront-to-lonsdale-quay','Waterfront'),('lonsdale-quay-to-waterfront','Lonsdale Quay')]:
+                    page.goto(f'http://127.0.0.1:{server.server_port}/seabusclock/{slug}.html')
+                    page.locator('#sailrows tr').first.wait_for(state='attached')
+                    assert page.locator('#terminal').input_value() == terminal
+                    assert page.locator('#date').input_value() == page.locator('body').get_attribute('data-schedule-date')
+                    assert 'Next scheduled departure' in page.locator('#finding').inner_text()
+                    assert page.locator('.place-evidence li').count() >= 1
+                    assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
                 browser.close()
             print("Browser checks passed: source data, filters and mobile layout")
         finally:

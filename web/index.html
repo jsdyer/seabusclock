@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>{{TITLE}} · CoolCode</title>
+    <title>Vancouver SeaBus Schedules and Passenger Counts · {{TITLE}}</title>
     <meta name="description" content="{{DESCRIPTION}}" />
     <link rel="stylesheet" href="./style.css" />
-    <script type="module" src="./app.mjs"></script>
+    <script type="module" src="./app.mjs?v=place-examples"></script>
   <script defer src="/assets/tool-metrics.js" referrerpolicy="no-referrer"></script>
 </head>
   <body data-tool="{{TOOL_ID}}">
@@ -17,7 +17,9 @@
       </nav>
     </header>
     <main>
-      <h1>{{TITLE}}</h1>
+      <h1>Vancouver SeaBus Schedules and Passenger Counts</h1>
+      <p class="route-links" aria-label="SeaBus directions"><!-- place-links --></p>
+      <!-- place-example -->
       <p class="lead">{{DESCRIPTION}}</p>
       <section id="seabus-profile" class="report">
         <h2>SeaBus passenger patterns</h2>
