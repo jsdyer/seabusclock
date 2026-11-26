@@ -6,7 +6,7 @@
     <title>Vancouver SeaBus Schedules and Passenger Counts · {{TITLE}}</title>
     <meta name="description" content="{{DESCRIPTION}}" />
     <link rel="stylesheet" href="./style.css" />
-    <script type="module" src="./app.mjs?v=place-examples"></script>
+    <script type="module" src="./app.mjs?v=crossing-planner"></script>
   <script defer src="/assets/tool-metrics.js" referrerpolicy="no-referrer"></script>
 </head>
   <body data-tool="{{TOOL_ID}}">
@@ -18,11 +18,45 @@
     </header>
     <main>
       <h1>Vancouver SeaBus Schedules and Passenger Counts</h1>
-      <p class="route-links" aria-label="SeaBus directions"><!-- place-links --></p>
       <!-- place-example -->
-      <p class="lead">{{DESCRIPTION}}</p>
+      <p class="lead">Find a scheduled sailing between downtown Vancouver and North Vancouver, or <a href="#seabus-profile">see when the SeaBus was busiest</a>.</p>
+      <section class="report">
+        <h2>Find a SeaBus crossing</h2>
+        <p>
+          Choose your terminal and departure time. Times are scheduled by TransLink and shown in Vancouver time.
+        </p>
+        <div class="filters">
+          <label
+            >Departing terminal<select id="terminal">
+              <option value="Waterfront">Waterfront</option>
+              <option value="Lonsdale Quay">Lonsdale Quay</option>
+            </select></label
+          ><label>Service date<input id="date" type="date" /></label
+          ><label
+            >From Pacific time<input id="time" type="time" value="08:00"
+          /></label>
+        </div>
+        <p id="finding" role="status" class="finding">Looking up scheduled sailings…</p>
+        <p id="edition" class="edition"></p>
+        <details>
+          <summary>Sailings from this time</summary>
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Depart</th>
+                  <th>Arrive</th>
+                  <th>Gap to next sailing</th>
+                </tr>
+              </thead>
+              <tbody id="sailrows"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+      <p class="route-links" aria-label="SeaBus directions"><!-- place-links --></p>
       <section id="seabus-profile" class="report">
-        <h2>SeaBus passenger patterns</h2>
+        <h2>Historical passenger patterns</h2>
         <p>
           Compare the published average volume in each clock hour between
           Waterfront and Lonsdale Quay.
@@ -74,40 +108,6 @@
             >TransLink performance review ↗</a
           >
         </p>
-      </section>
-      <section class="report">
-        <h2>Scheduled crossings</h2>
-        <p>
-          Choose a date to see the next sailing and the wait if you miss it.
-        </p>
-        <p id="edition" class="edition"></p>
-        <div class="filters">
-          <label
-            >Departing terminal<select id="terminal">
-              <option value="Waterfront">Waterfront</option>
-              <option value="Lonsdale Quay">Lonsdale Quay</option>
-            </select></label
-          ><label>Service date<input id="date" type="date" /></label
-          ><label
-            >From Pacific time<input id="time" type="time" value="08:00"
-          /></label>
-        </div>
-        <p id="finding" role="status" class="finding"></p>
-        <details>
-          <summary>Sailings from this time</summary>
-          <div class="scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>Depart</th>
-                  <th>Arrive</th>
-                  <th>Gap to next sailing</th>
-                </tr>
-              </thead>
-              <tbody id="sailrows"></tbody>
-            </table>
-          </div>
-        </details>
       </section>
       <noscript>Enable JavaScript to explore the data.</noscript>
       <footer>

@@ -29,12 +29,15 @@ def main():
                 errors = []
                 page.on("pageerror", lambda error: errors.append(str(error)))
                 page.goto(f"http://127.0.0.1:{server.server_port}/seabusclock/")
+                assert page.locator("main section h2").first.inner_text() == "Find a SeaBus crossing"
                 page.locator("#splot .spark").first.wait_for()
                 assert "peaks at" in page.locator("#speak").inner_text()
                 page.select_option("#sday","Sat")
                 page.select_option("#terminal","Lonsdale Quay")
                 page.locator("#sailrows tr").first.wait_for(state="attached")
                 assert "Next scheduled departure" in page.locator("#finding").inner_text()
+                assert "Arrives at Waterfront" in page.locator("#finding").inner_text()
+                assert page.locator("#date").input_value() in page.locator("#finding").inner_text()
                 assert page.locator("#srows tr").count() == 24
                 page.screenshot(path=str(screenshots / "desktop.png"), full_page=True)
                 page.set_viewport_size({"width": 390, "height": 844})
@@ -46,6 +49,7 @@ def main():
                     page.locator('#sailrows tr').first.wait_for(state='attached')
                     assert page.locator('#terminal').input_value() == terminal
                     assert page.locator('#date').input_value() == page.locator('body').get_attribute('data-schedule-date')
+                    assert page.locator('#time').input_value() == '08:00'
                     assert 'Next scheduled departure' in page.locator('#finding').inner_text()
                     assert page.locator('.place-evidence li').count() >= 1
                     assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')

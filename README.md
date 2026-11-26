@@ -13,7 +13,7 @@ Direct examples
 
 ## Reading the records
 
-The hourly profile uses AvgDailyVolume from the newest TSPR seasonal SeaBus hourly CSV. A missing hour remains missing. The schedule uses GTFS route type 4 and the SeaBus route name, both terminal stop times, weekly calendars and holiday exceptions. After-midnight times use the original service date and appear on the corresponding civil date. The first next-day sailing and its following gap are included in late-night searches. Date selection is bounded by the retrieved feed. Service disruptions and vehicle positions are outside this schedule. The seasonal averages are historical and independent of the sailing date selected.
+The hourly profile uses AvgDailyVolume from the newest TSPR seasonal SeaBus hourly CSV. A missing hour remains missing. The schedule uses GTFS route type 4 and the SeaBus route name, both terminal stop times, weekly calendars and holiday exceptions. After-midnight times use the original service date and appear on the corresponding civil date. The first next-day sailing and its following gap are included in late-night searches. The planner starts at the current Vancouver time when today is inside the retrieved timetable. Outside that range it shows 08:00 on the closest covered date. The two direction examples open at 08:00 on their published example date. Service disruptions and vehicle positions are outside this schedule. The seasonal averages are historical and independent of the sailing date selected.
 
 ## Sources and maintenance
 

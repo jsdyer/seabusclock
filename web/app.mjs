@@ -1,5 +1,5 @@
 import "./harbour.mjs";
-import { chooseDate, clock, mins } from "./schedule.mjs";
+import { chooseDate, clock, localToday, mins } from "./schedule.mjs";
 import { by, row, read } from "./ui.mjs";
 import { sailings } from "./model.mjs";
 try {
@@ -11,6 +11,11 @@ try {
   if (preset.terminal) by("terminal").value = preset.terminal;
   date.value = preset.scheduleDate >= data.start && preset.scheduleDate <= data.end
     ? preset.scheduleDate : chooseDate(data);
+  if (!preset.terminal && date.value === localToday()) {
+    by("time").value = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "America/Vancouver", hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+    }).format(new Date());
+  }
   by("edition").textContent =
     "Schedule " +
     data.start +
@@ -36,10 +41,10 @@ try {
       by("terminal").value,
       mins(by("time").value),
     );
+    const terminal = by("terminal").value;
+    const destination = terminal === "Waterfront" ? "Lonsdale Quay" : "Waterfront";
     by("finding").textContent = list.length
-      ? "Next scheduled departure " +
-        clock(list[0][0]) +
-        ". " +
+      ? `Next scheduled departure from ${terminal} at or after ${clock(mins(by("time").value))} on ${date.value}: ${clock(list[0][0])}. Arrives at ${destination} at ${clock(list[0][1])}. ` +
         (list[1]
           ? "The following sailing is " +
             (list[1][0] - list[0][0]) +
